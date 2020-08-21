@@ -49,7 +49,7 @@ export const fetchTxStatus = async ({
 
 export const createQueryParams = (txConfig: ITxConfig, type: 'resubmit' | 'cancel') => {
   const { to, from, gasLimit, nonce, chainId, value, data } = txConfig.rawTransaction;
-  const senderAddress = txConfig.senderAccount.address;
+  const senderAddress = txConfig.senderAccount?.address;
   return {
     from: from || senderAddress,
     type,

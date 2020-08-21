@@ -228,7 +228,7 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
               disableDynamicTxReceiptDisplay={true}
               disableAddTxToAccount={true}
             />
-            <Button onClick={clearForm} fullwidth={true}>
+            <Button onClick={clearForm} fullwidth={true} inverted={true}>
               {translateRaw('TX_STATUS_GO_BACK')}
             </Button>
             <br />
@@ -242,7 +242,6 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
                   onClick={handleTxResubmitRedirect}
                   disabled={!isSenderAccountPresent || resubmitting}
                   fullwidth={true}
-                  inverted={true}
                 >
                   {'Speed up transaction'}
                 </Button>
@@ -259,7 +258,6 @@ const TxStatus = ({ history, location }: RouteComponentProps) => {
                   onClick={handleTxCancelRedirect}
                   disabled={!isSenderAccountPresent || cancelling}
                   fullwidth={true}
-                  inverted={true}
                 >
                   {'Cancel transaction'}
                 </Button>
