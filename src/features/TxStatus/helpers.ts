@@ -2,9 +2,10 @@ import { ProviderHandler, getTxsFromAccount } from '@services';
 import {
   makeTxConfigFromTxResponse,
   makeTxConfigFromTxReceipt,
-  makeUnknownTxReceipt
+  makeUnknownTxReceipt,
+  makePendingTxReceipt
 } from '@utils';
-import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network } from '@types';
+import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network, ITxConfig } from '@types';
 
 export const fetchTxStatus = async ({
   txHash,
@@ -33,11 +34,30 @@ export const fetchTxStatus = async ({
   const provider = new ProviderHandler(network);
   const fetchedTx = await provider.getTransactionByHash(txHash as ITxHash, true);
   if (!fetchedTx) {
-    return undefined;
+    return;
   }
+
   const fetchedTxConfig = makeTxConfigFromTxResponse(fetchedTx, assets, network, accounts);
   return {
     config: fetchedTxConfig,
-    receipt: makeUnknownTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
+    receipt:
+      fetchedTx && fetchedTx.confirmations
+        ? makeUnknownTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
+        : makePendingTxReceipt(txHash as ITxHash)(ITxType.UNKNOWN, fetchedTxConfig)
+  };
+};
+
+export const createQueryParams = (txConfig: ITxConfig, type: 'resubmit' | 'cancel') => {
+  const { to, from, gasLimit, nonce, chainId, value, data } = txConfig.rawTransaction;
+  const senderAddress = txConfig.senderAccount.address;
+  return {
+    from: from || senderAddress,
+    type,
+    to,
+    gasLimit,
+    nonce,
+    chainId,
+    value,
+    data
   };
 };
