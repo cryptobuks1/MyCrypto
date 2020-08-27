@@ -5,7 +5,16 @@ import {
   makeUnknownTxReceipt,
   makePendingTxReceipt
 } from '@utils';
-import { ITxType, ITxHash, NetworkId, StoreAccount, Asset, Network, ITxConfig } from '@types';
+import {
+  ITxType,
+  ITxHash,
+  NetworkId,
+  StoreAccount,
+  Asset,
+  Network,
+  ITxConfig,
+  TxQueryTypes
+} from '@types';
 
 export const fetchTxStatus = async ({
   txHash,
@@ -47,7 +56,7 @@ export const fetchTxStatus = async ({
   };
 };
 
-export const createQueryParams = (txConfig: ITxConfig, type: 'resubmit' | 'cancel') => {
+export const createQueryParams = (txConfig: ITxConfig, type: TxQueryTypes) => {
   const { to, from, gasLimit, nonce, chainId, value, data } = txConfig.rawTransaction;
   const senderAddress = txConfig.senderAccount?.address;
   return {
