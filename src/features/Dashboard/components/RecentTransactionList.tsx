@@ -176,20 +176,20 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
         asset,
         fromAddressBookEntry,
         toAddressBookEntry,
-        network,
+        networkId,
         txType
       }) => {
         const editableFromLabel = EditableAccountLabel({
           addressBookEntry: fromAddressBookEntry,
           address: from,
-          networkId: network.id,
+          networkId,
           createContact,
           updateContact
         });
         const editableToLabel = EditableAccountLabel({
           addressBookEntry: toAddressBookEntry,
           address: receiverAddress || to,
-          networkId: network.id,
+          networkId,
           createContact,
           updateContact
         });
@@ -222,7 +222,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
           />,
           <RouterLink
             key={4}
-            to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${network.id}`}
+            to={`${ROUTE_PATHS.TX_STATUS.path}/?hash=${hash}&network=${networkId}`}
           >
             <img src={moreIcon} alt="View more information about this transaction" />
           </RouterLink>
